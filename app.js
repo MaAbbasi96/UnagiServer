@@ -22,28 +22,31 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
+
+
+
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
+var cors = require('cors');
+app.use(cors());
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(function(req,res,next){
-    if(req.method=='GET'){
-      return next();
-    }
+    res.setHeader("content-type","application/json");
+    res.setHeader("Access-Control-Allow-Origin","'*'");
     if(!req.body.unique_id){
         return res.sendStatus(401);
     }
     var User=mongoose.model('User');
-    if(!req.body.latitude || !req.body.longitude){
+    console.log(req.body);
+    if(!req.body.location || !req.body.location.latitude || !req.body.location.longitude){
         return res.sendStatus(400);
     }
-    req.location={
-      latitude:req.body.latitude,
-      longitude:req.body.longitude
-    };
+    req.location=req.body.location;
+
     User.findOne({unique_id:req.body.unique_id},function(err,user){
         if(err){
               console.log(err);
