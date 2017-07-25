@@ -15,6 +15,8 @@ mongoose.model('User', UserSchema);
 var PostSchema = require('./models/Post');
 mongoose.model('Post', PostSchema);
 
+var User=mongoose.model('User');
+
 var v1 = require('./routes/v1');
 
 var app = express();
@@ -37,21 +39,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(function(req,res,next){
     res.setHeader("content-type","application/json");
     res.setHeader("Access-Control-Allow-Origin","'*'");
-    req.body.unique_id=req.headers.unique_id;
-    req.body.location=JSON.parse(req.headers.location);
-    if(!req.body.unique_id){
-        return res.sendStatus(401);
-    }
-    var User=mongoose.model('User');
-    console.log(req.body);
-    if(!req.body.location || !req.body.location.latitude || !req.body.location.longitude){
-        return res.sendStatus(400);
-    }
-    req.location=req.body.location;
-    User.findOne({unique_id:req.body.unique_id},function(err,user){
-        if(err){
-              console.log(err);
-        }
+    if(!req.header.unique_id) return res.sendStatus(401);
+    req.unique_id=req.headers.unique_id;
+    if(!req.header.location) return res.sendStatus(400);
+    req.location=JSON.parse(req.headers.location);
+    User.findOne({unique_id:req.unique_id},function(err,user){
         req.user=user;
         return next();
     })
