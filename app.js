@@ -37,6 +37,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(function(req,res,next){
     res.setHeader("content-type","application/json");
     res.setHeader("Access-Control-Allow-Origin","'*'");
+    req.body.unique_id=req.headers.unique_id;
+    req.body.location=JSON.parse(req.headers.location);
     if(!req.body.unique_id){
         return res.sendStatus(401);
     }
@@ -46,7 +48,6 @@ app.use(function(req,res,next){
         return res.sendStatus(400);
     }
     req.location=req.body.location;
-
     User.findOne({unique_id:req.body.unique_id},function(err,user){
         if(err){
               console.log(err);
