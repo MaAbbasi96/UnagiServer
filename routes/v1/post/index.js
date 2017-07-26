@@ -21,15 +21,25 @@ router.post("/", function(req, res) {
 router.get("/", function(req, res) {
   if (!req.user) new User({ unique_id: req.unique_id }).save();
   var nearbyPosts = [];
-  Post.find({}, [], { sort: { date: -1 } }, function(err, posts) {
-    posts.forEach(function(post) {
-      if (geo.getDistance(req.location, post.location) < radius) {
+  // Post.find({}, [], { sort: { date: -1 } }, function(err, posts) {
+  //   posts.forEach(function(post) {
+  //     if (geo.getDistance(req.location, post.location) < radius) {
+  //       nearbyPosts = nearbyPosts.concat(post);
+  //     }
+  //   }, this);
+  //   return res.jsonp({ posts: nearbyPosts, status: 0 });
+  // });
+  const cursor = Post.find({},[],{sort:{date:-1}}).cursor();  
+      cursor.on('data',(post)=>{
+      // console.log(post,"--------------------");
+      // console.log('distance',geo.getDistance(req.location,post.location));
+      if(geo.getDistance(req.location,post.location) < radius){
         nearbyPosts = nearbyPosts.concat(post);
       }
-    }, this);
-    return res.jsonp({ posts: nearbyPosts, status: 0 });
-  });
-  return;
+    })
+    .on('end',() =>res.jsonp({posts : nearbyPosts,status : 0}))
+    .on('error',(err) => res.jsonp(err));
+    // return res.jsonp({posts : nearbyPosts,status : 0});
 });
 
 module.exports = router;
