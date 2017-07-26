@@ -38,7 +38,8 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(function(req, res, next) {
   res.setHeader("content-type", "application/json");
   res.setHeader("Access-Control-Allow-Origin", "'*'");
-  if (!req.headers.unique_id) return res.sendStatus(401);
+  if (!req.headers.unique_id || req.headers.unique_id.length != 32)
+    return res.sendStatus(401);
   req.unique_id = req.headers.unique_id;
   if (!req.headers.location) return res.sendStatus(400);
   req.location = JSON.parse(req.headers.location);
