@@ -29,7 +29,6 @@ router.get("/", function(req, res) {
   if (!req.user) new User({ unique_id: req.unique_id }).save();
   var nearbyPosts = [];
   const cursor = Post.find({},[],{sort:{date:-1}}).cursor();  
-  var i = 0;    
   cursor.on('data',(post)=>{
       if(geo.getDistance(req.location,post.location) < radius){
         nearbyPosts = nearbyPosts.concat(post);
@@ -46,5 +45,4 @@ router.get("/", function(req, res) {
     })  
     .on('error',(err) => res.jsonp(err));
 });
-
 module.exports = router;
