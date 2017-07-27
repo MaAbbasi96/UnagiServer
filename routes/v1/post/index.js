@@ -2,9 +2,11 @@ var express = require("express");
 var router = express.Router();
 var mongoose = require("mongoose");
 var Post = mongoose.model("Post");
-var geo = require("geolib");
 var User = mongoose.model("User");
+var Like = mongoose.model("Like");
+var geo = require("geolib");
 var like = require("./like");
+var async = require("async");
 var radius = 1000;
 
 router.use('/:id/',function(req,res,next){
@@ -23,29 +25,26 @@ router.post("/", function(req, res) {
     });
   } else return res.sendStatus(401);
 });
-
 router.get("/", function(req, res) {
   if (!req.user) new User({ unique_id: req.unique_id }).save();
   var nearbyPosts = [];
-  // Post.find({}, [], { sort: { date: -1 } }, function(err, posts) {
-  //   posts.forEach(function(post) {
-  //     if (geo.getDistance(req.location, post.location) < radius) {
-  //       nearbyPosts = nearbyPosts.concat(post);
-  //     }
-  //   }, this);
-  //   return res.jsonp({ posts: nearbyPosts, status: 0 });
-  // });
   const cursor = Post.find({},[],{sort:{date:-1}}).cursor();  
-      cursor.on('data',(post)=>{
-      // console.log(post,"--------------------");
-      // console.log('distance',geo.getDistance(req.location,post.location));
+  var i = 0;    
+  cursor.on('data',(post)=>{
       if(geo.getDistance(req.location,post.location) < radius){
         nearbyPosts = nearbyPosts.concat(post);
       }
     })
-    .on('end',() =>res.jsonp({posts : nearbyPosts,status : 0}))
+    .on('end',() =>{
+      async.map(nearbyPosts,(post,cb) =>{
+        Like.findOne({user:req.user.id,post:post.id}, (err,like)=>{
+          like ? isLiked = true : isLiked =false;
+          cb(null, {post,'isLiked' : isLiked})
+        })
+      },
+        (error,response)=>res.jsonp(response));
+    })  
     .on('error',(err) => res.jsonp(err));
-    // return res.jsonp({posts : nearbyPosts,status : 0});
 });
 
 module.exports = router;
