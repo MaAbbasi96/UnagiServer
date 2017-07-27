@@ -4,8 +4,14 @@ var mongoose = require("mongoose");
 var Post = mongoose.model("Post");
 var geo = require("geolib");
 var User = mongoose.model("User");
+var like = require("./like");
 var radius = 1000;
 
+router.use('/:id/',function(req,res,next){
+    req.postId = req.params.id;
+    return next();
+});
+router.use('/:id/like',like);
 router.post("/", function(req, res) {
   if (req.user) {
     new Post({
