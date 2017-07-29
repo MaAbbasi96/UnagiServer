@@ -3,20 +3,28 @@ var router = express.Router();
 var mongoose = require("mongoose");
 var Like = mongoose.model("Like");
 var Post = mongoose.model("Post");
-
-router.put("/",function(req,res,next){
-    console.log("like id",req.params);
-    console.log("post id ",req.postId);
-    new Like({user : req.user.id, post : req.postId}).save();
+function updatePostLikes(increment,req){
     Post.findOne({id : req.post_id}, function(err, post){
         if (err)
             console.log(err);
         if (post){
-            post.likes = post.likes + 1;
+            increment ? post.likes += 1 : post.likes -= 1;
             post.save();
-            return res.jsonp("Liked");
         }
-    });
+    });    
+}
+router.put("/",function(req,res,next){
+    updatePostLikes(true,req);
+    new Like({user : req.user.id, post : req.postId}).save((err,like)=>res.jsonp(like));
     
+});
+router.delete("/",function(req,res,next){
+    Like.findOneAndRemove({user : req.user.id, post: req.postId},(err,response)=>{
+        if (err)
+            console.log(err);  
+        updatePostLikes(false,req);
+        return res.jsonp(response);
+    });
+
 });
 module.exports = router;
