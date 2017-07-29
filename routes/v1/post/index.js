@@ -13,7 +13,9 @@ router.use('/:id/',function(req,res,next){
     req.postId = req.params.id;
     return next();
 });
+
 router.use('/:id/like',like);
+
 router.post("/", function(req, res) {
   if (req.user) {
     new Post({
@@ -37,7 +39,7 @@ router.get("/", function(req, res) {
     .on('end',() =>{
       async.map(nearbyPosts,(post,cb) =>{
         Like.findOne({user:req.user.id,post:post.id}, (err,like)=>{
-          like ? isLiked = true : isLiked =false;
+          like ? isLiked = true : isLiked = false;
           cb(null, {post,'isLiked' : isLiked})
         })
       },
