@@ -15,6 +15,9 @@ mongoose.model("User", UserSchema);
 var PostSchema = require("./models/Post");
 mongoose.model("Post", PostSchema);
 
+var LikeSchema = require("./models/Like");
+mongoose.model("Like",LikeSchema);
+
 var User = mongoose.model("User");
 
 var v1 = require("./routes/v1");
