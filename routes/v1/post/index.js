@@ -39,11 +39,13 @@ router.get("/", function(req, res) {
     .on('end',() =>{
       async.map(nearbyPosts,(post,cb) =>{
         Like.findOne({user:req.user.id,post:post.id}, (err,like)=>{
-          like ? isLiked = true : isLiked = false;
-          cb(null, {post,'isLiked' : isLiked})
+          var postObject = post.toObject();
+          postObject.isLiked = true;
+          like ? postObject.isLiked = true : postObject.isLiked = false;
+          cb(null, postObject);
         })
       },
-        (error,response)=>res.jsonp(response));
+        (error,response)=>res.jsonp({'posts':response,'status' : 0}));
     })  
     .on('error',(err) => res.jsonp(err));
 });
