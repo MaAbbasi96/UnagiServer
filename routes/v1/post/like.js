@@ -4,12 +4,16 @@ var mongoose = require("mongoose");
 var Like = mongoose.model("Like");
 var Post = mongoose.model("Post");
 function updatePostLikes(increment,req){
-    Post.findOne({id : req.post_id}, function(err, post){
+    Post.findOne({_id : req.postId}, function(err, post){
         if (err)
             console.log(err);
         if (post){
-            increment ? post.likes += 1 : post.likes -= 1;
-            post.save();
+            increment ? post.likes = post.likes + 1 : post.likes = post.likes - 1;
+            post.save((err,post)=>{
+                if (err)
+                    console.log(err);
+                return;
+            });
         }
     });    
 }
