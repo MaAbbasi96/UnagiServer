@@ -38,7 +38,7 @@ router.get("/", function(req, res) {
     })
     .on('end',() =>{
       async.map(nearbyPosts,(post,cb) =>{
-        Like.findOne({user:req.user.id,post:post.id}, (err,like)=>{
+        Like.findOne({user:req.user._id,post:post.id}, (err,like)=>{
           var postObject = post.toObject();
           postObject.isLiked = true;
           like ? postObject.isLiked = true : postObject.isLiked = false;
