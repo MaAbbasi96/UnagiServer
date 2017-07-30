@@ -7,12 +7,15 @@ var Like = mongoose.model("Like");
 var geo = require("geolib");
 var like = require("./like");
 var async = require("async");
+var hot = require("./hot");
 var radius = 1000;
 
 router.use('/:id/',function(req,res,next){
     req.postId = req.params.id;
     return next();
 });
+
+router.use('/hot', hot);
 
 router.use('/:id/like',like);
 
