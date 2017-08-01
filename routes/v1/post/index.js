@@ -56,22 +56,27 @@ function sendPosts(req, res, hotRequested) {
         nearbyPosts.sort((a, b) => {
           return (a.hotRate > b.hotRate) ? -1 : ((b.hotRate > a.hotRate) ? 1 : 0);
         })
-      async.map(nearbyPosts, (post, cb) => {
-          Like.findOne({
-            user: req.user._id,
-            post: post.id
-          }, (err, like) => {
-            var postObject = post.toObject();
-            like ? postObject.isLiked = true : postObject.isLiked = false;
-            cb(null, postObject);
-          })
-        },
-        (error, response) => {
-          res.jsonp({
-            'posts': response,
-            'status': 0
-          })
-        });
+      if (req.user) { //Don't get post likes if user is new
+        async.map(nearbyPosts, (post, cb) => {
+            Like.findOne({
+              user: req.user._id,
+              post: post.id
+            }, (err, like) => {
+              var postObject = post.toObject();
+              like ? postObject.isLiked = true : postObject.isLiked = false;
+              cb(null, postObject);
+            })
+          },
+          (error, response) => {
+            res.jsonp({
+              'posts': response,
+              'status': 0
+            })
+          });
+      } else res.jsonp({
+        'posts': nearbyPosts,
+        'status': 0
+      }); //
     })
     .on('error', (err) => res.jsonp(err));
 }
