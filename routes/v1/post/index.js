@@ -41,15 +41,24 @@ function sendPosts(req, res, hotRequested) {
     unique_id: req.unique_id
   }).save();
   var nearbyPosts = [];
+  var addPost = false;
+  if (!req.headers.lastpost){
+    addPost = true;
+  }
   const cursor = Post.find({}, [], {
     sort: {
       date: -1
     }
   }).cursor();
   cursor.on('data', (post) => {
-      if (geo.getDistance(req.location, post.location) < radius) {
+      if (geo.getDistance(req.location, post.location) < radius && addPost) {
         nearbyPosts = nearbyPosts.concat(post);
       }
+      if (post._id == req.headers.lastpost){
+        addPost = true;
+      }
+      if (nearbyPosts.length >= 10)
+          addPost = false;
     })
     .on('end', () => {
       if (hotRequested)
