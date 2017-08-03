@@ -19,7 +19,8 @@ router.post("/", function (req, res) {
     new Post({
       text: req.body.text,
       location: req.location,
-      user: req.user._id
+      user: req.user._id,
+      date : Date.now()
     }).save((err, post) => {
       return res.jsonp({
         status: 0,
