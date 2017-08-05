@@ -6,8 +6,9 @@ var User = mongoose.model("User");
 var router = express.Router();
 
 router.post("/", verifyType, function(req, res) {
+  req.mydata.obj.username = req.body.username;
   User.findOneAndUpdate(
-    { ...req.mydata.obj, username: req.body.username },
+    req.mydata.obj,
     { $set: { refreshtoken: createRefreshToken() } },
     { new: true },
     (err, user) => {

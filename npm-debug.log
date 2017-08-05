@@ -7,7 +7,7 @@
 6 silly lifecycle Rahnema-Team2-Server@0.0.0~prestart: no script for prestart, continuing
 7 info lifecycle Rahnema-Team2-Server@0.0.0~start: Rahnema-Team2-Server@0.0.0
 8 verbose lifecycle Rahnema-Team2-Server@0.0.0~start: unsafe-perm in lifecycle true
-9 verbose lifecycle Rahnema-Team2-Server@0.0.0~start: PATH: /usr/lib/node_modules/npm/bin/node-gyp-bin:/home/alin/Desktop/rahnema/server/node_modules/.bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin:/usr/lib/jvm/java-8-openjdk-amd64/bin:/home/alin/Android/sdk/tools:/home/alin/Android/sdk/platform-tools
+9 verbose lifecycle Rahnema-Team2-Server@0.0.0~start: PATH: /usr/lib/node_modules/npm/bin/node-gyp-bin:/home/alin/Desktop/rahnema/server/node_modules/.bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/usr/lib/jvm/java-8-openjdk-amd64/bin:/home/alin/Android/sdk/tools:/home/alin/Android/sdk/platform-tools:/snap/bin:/usr/lib/jvm/java-8-openjdk-amd64/bin:/home/alin/Android/sdk/tools:/home/alin/Android/sdk/platform-tools
 10 verbose lifecycle Rahnema-Team2-Server@0.0.0~start: CWD: /home/alin/Desktop/rahnema/server
 11 silly lifecycle Rahnema-Team2-Server@0.0.0~start: Args: [ '-c', 'node ./bin/www' ]
 12 silly lifecycle Rahnema-Team2-Server@0.0.0~start: Returned: code: 1  signal: null

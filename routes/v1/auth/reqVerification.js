@@ -1,4 +1,4 @@
-export default function verifyType(req, res, next) {
+function verifyType(req, res, next) {
   if (!req.headers.type)
     return res.status(401).send("please specify request type");
   if (!req.body.username)
@@ -25,3 +25,5 @@ function verifyPass(req, res, next) {
   req.mydata.msg = "The username or password don't match";
   return next();
 }
+
+module.exports = verifyType;
