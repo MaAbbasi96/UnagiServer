@@ -15,12 +15,13 @@ router.post("/", function(req, res) {
     else {
       new User({
         username: req.body.username,
-        password: req.body.password
+        password: req.body.password,
+        refreshtoken: createRefreshToken()
       }).save((err, user) => {
         if (user) {
           return res.status(201).send({
             accesstoken: createAccessToken(user),
-            refreshtoken: createRefreshToken()
+            refreshtoken: user.refreshtoken
           });
         } else console.error(err);
       });
