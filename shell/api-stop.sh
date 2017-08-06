@@ -12,11 +12,13 @@ APP_RUNNING=$?
 #check if api is in list , then stops api
 if [ "${APP_RUNNING}" = "0" ]
 then
+    echo "Stopping API..."
     pm2 stop ${APP_NAME}
 else
     echo "Couldnt find API proccess in pm2 list"
 fi
 
 #stops nginx and mongodb services
+echo "Stoppping MongoDB And NginX..."
 systemctl stop ${MONGODB_SERVICE}
 systemctl stop ${NGINX_SERVICE}
