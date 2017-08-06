@@ -9,6 +9,9 @@ NGINX_SERVICE=nginx.service
 pm2 describe $APP_NAME &>/dev/null 
 APP_RUNNING=$?
 
+echo
+echo "********************************************"
+
 #check if api is in list , then stops api
 if [ "${APP_RUNNING}" = "0" ]
 then
@@ -22,3 +25,6 @@ fi
 echo "Stoppping MongoDB And NginX..."
 systemctl stop ${MONGODB_SERVICE}
 systemctl stop ${NGINX_SERVICE}
+
+echo "********************************************"
+echo

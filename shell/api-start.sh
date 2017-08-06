@@ -14,11 +14,14 @@ APP_RUNNING=$?
 MONGODB_STATUS="`systemctl is-active $MONGODB_SERVICE`"
 NGINX_STATUS="`systemctl is-active $NGINX_SERVICE`"
 
+echo
+echo "********************************************"
+
 #check if mongodb and nginx are up , then starts api
 if [ $MONGODB_STATUS = "active" ] && [ $NGINX_STATUS = "active" ]
 then
     echo "NginX and MongoDB Running"
-    echo "Starting Api"
+    echo "Starting Api..."
 
     #check if api is already in pm2 list or not
     if [ "${APP_RUNNING}" = "1" ]
@@ -33,3 +36,6 @@ else
     echo "NginX Status ${NGINX_STATUS}"
     echo "First run api-prepare"
 fi
+
+echo "********************************************"
+echo
