@@ -1,5 +1,7 @@
 #!/bin/bash
 
+cd ${API_PATH}
+
 #consts
 APP_NAME=UnagiAPI
 API_PATH=/var/www/Server
@@ -11,7 +13,6 @@ APP_RUNNING=$?
 echo
 echo "********************************************"
 
-cd ${API_PATH}
 if [ "${APP_RUNNING}" = "0" ]
 then
     echo "Stopping API..."
