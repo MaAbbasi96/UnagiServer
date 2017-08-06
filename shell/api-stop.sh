@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #consts
-APP_NAME=www
+APP_NAME=UnagiAPI
 MONGODB_SERVICE=mongod.service
 NGINX_SERVICE=nginx.service
 
