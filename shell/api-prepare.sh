@@ -1,8 +1,11 @@
 #!/bin/bash
 
+#consts
 MONGODB_SERVICE=mongod.service
 NGINX_SERVICE=nginx.service
 
+
+#check for mongodb and nginx if not started already, starts them
 if [ "`systemctl is-active $MONGODB_SERVICE`" != "active" ]
 then
     echo "Starting MongoDB service"
