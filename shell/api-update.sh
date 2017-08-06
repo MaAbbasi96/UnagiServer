@@ -25,12 +25,17 @@ then
     echo "checking and installing new dependencies..."
     if npm install
     then 
-        if [ "${APP_RUNNING}" = "0" ]
+        if [ "$1" = "--no-run"]
         then
-            echo "Starting API..."
-            pm2 start ${APP_NAME}
-        else   
-            echo "Couldnt start API , UnagiAPI not found in pm2 proccess list"
+            echo "API is not starting because --no-run argument is passed"
+        else
+            if [ "${APP_RUNNING}" = "0" ]
+            then
+                echo "Starting API..."
+                pm2 start ${APP_NAME}
+            else   
+                echo "Couldnt start API , UnagiAPI not found in pm2 proccess list"
+            fi
         fi
     else
         echo "an error occurred while checking and installing new deps (npm)."
