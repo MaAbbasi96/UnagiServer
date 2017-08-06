@@ -11,6 +11,7 @@ APP_RUNNING=$?
 echo
 echo "********************************************"
 
+cd ${API_PATH}
 if [ "${APP_RUNNING}" = "0" ]
 then
     echo "Stopping API..."
@@ -18,7 +19,6 @@ then
 fi
 
 
-cd ${API_PATH}
 echo "Pulling latest version from git , master branch"
 if git pull
 then
