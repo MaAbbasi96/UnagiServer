@@ -1,18 +1,24 @@
 #!/bin/bash
 
+#consts
 PM2_CFG=/var/www/Server/pm2cfg/UnagiAPI.json
 APP_NAME=UnagiAPI
 MONGODB_SERVICE=mongod.service
 NGINX_SERVICE=nginx.service
 
+#get api server current status
 pm2 describe $APP_NAME &>/dev/null 
 APP_RUNNING=$?
 
+#get mongodb and nginx current status
 MONGODB_STATUS="`systemctl is-active $MONGODB_SERVICE`"
 NGINX_STATUS="`systemctl is-active $NGINX_SERVICE`"
 
-if [ "${APP_RUNNING}" -ne 0 ];
+#check if api is already in pm2 list or not
+if [ "${APP_RUNNING}" -ne 0 ]
 then
+
+    #check if mongodb and nginx are up , then starts api
     if [ $MONGODB_STATUS = "active" ] && [ $NGINX_STATUS = "active" ]
     then
         echo "NginX and MongoDB Running"
