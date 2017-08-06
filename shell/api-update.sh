@@ -1,6 +1,5 @@
 #!/bin/bash
 
-cd ${API_PATH}
 
 #consts
 APP_NAME=UnagiAPI
@@ -19,7 +18,7 @@ then
     pm2 stop ${APP_NAME}
 fi
 
-
+cd ${API_PATH}
 echo "Pulling latest version from git , master branch"
 if git pull
 then
