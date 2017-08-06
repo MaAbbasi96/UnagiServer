@@ -25,7 +25,7 @@ then
     echo "checking and installing new dependencies..."
     if npm install
     then 
-        if [ "$1" = "--no-run"]
+        if [ "$1" = "--no-run" ]
         then
             echo "API is not starting because --no-run argument is passed"
         else
