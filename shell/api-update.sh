@@ -2,7 +2,7 @@
 
 #consts
 APP_NAME=UnagiAPI
-API_PATH=/var/wwww/Server
+API_PATH=/var/www/Server
 
 #get api server current status
 pm2 describe $APP_NAME &>/dev/null 
