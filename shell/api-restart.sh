@@ -18,7 +18,7 @@ then
     echo "Stopping API..."
     pm2 stop ${APP_NAME}
     #check if "-a" argument is passed
-    if [ $1 = "-a" ]
+    if [ "$1" = "-a" ]
     then
         echo "Restarting mongodb service..."
         systemctl restart ${MONGODB_SERVICE}
