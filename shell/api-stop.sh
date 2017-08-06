@@ -13,6 +13,8 @@ APP_RUNNING=$?
 if [ "${APP_RUNNING}" = "0" ]
 then
     pm2 stop ${APP_NAME}
+else
+    echo "Couldnt find API proccess in pm2 list"
 fi
 
 #stops nginx and mongodb services
