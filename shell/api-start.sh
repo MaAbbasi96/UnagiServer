@@ -14,22 +14,22 @@ APP_RUNNING=$?
 MONGODB_STATUS="`systemctl is-active $MONGODB_SERVICE`"
 NGINX_STATUS="`systemctl is-active $NGINX_SERVICE`"
 
-#check if api is already in pm2 list or not
-if [ "${APP_RUNNING}" -ne 0 ]
+#check if mongodb and nginx are up , then starts api
+if [ $MONGODB_STATUS = "active" ] && [ $NGINX_STATUS = "active" ]
 then
+    echo "NginX and MongoDB Running"
+    echo "Starting Api"
 
-    #check if mongodb and nginx are up , then starts api
-    if [ $MONGODB_STATUS = "active" ] && [ $NGINX_STATUS = "active" ]
+    #check if api is already in pm2 list or not
+    if [ "${APP_RUNNING}" = "1" ]
     then
-        echo "NginX and MongoDB Running"
-        echo "Starting Api"
         pm2 start $PM2_CFG
     else
-        echo "Cant start api : "
-        echo "Mongodb Status ${MONGODB_STATUS}"
-        echo "NginX Status ${NGINX_STATUS}"
-        echo "First run api-prepare"
-    fi 
+        pm2 start $APP_NAME
+    fi
 else
-    echo "Api Is Already inside pm2 procces list try pm2 status"
+    echo "Cant start api : "
+    echo "Mongodb Status ${MONGODB_STATUS}"
+    echo "NginX Status ${NGINX_STATUS}"
+    echo "First run api-prepare"
 fi
