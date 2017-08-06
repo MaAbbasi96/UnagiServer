@@ -4,3 +4,4 @@ api-stop -- stops API, MongoDB and NginX
 api-hardstop -- deletes API from pm2 list , stops ngninx and mongodb
 api-reload -- reloads API only without delay
 api-status -- logs mongodb, nginx and API status
+api-restart -- restarts API ans also nginx and mongodb if "a" was passed as an argument (./api-restart.sh a)
