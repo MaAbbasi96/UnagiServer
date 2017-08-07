@@ -1,19 +1,19 @@
 var express = require("express"),
-  router = express.Router(),
-  post = require("./post"),
-  auth = require("./auth"),
-  jwt = require("express-jwt");
+    router = express.Router(),
+    post = require("./post"),
+    auth = require("./auth"),
+    jwt = require("express-jwt");
 
 router.use("/auth", auth);
 
 router.use(
-  jwt({
-    secret: "oonagi",
-    getToken: function(req) {
-      if (req.headers.accesstoken) return req.headers.accesstoken;
-      return null;
-    }
-  }),
+    jwt({
+        secret: "oonagi",
+        getToken: function(req) {
+            if (req.headers.accesstoken) return req.headers.accesstoken;
+            return null;
+        }
+    }),
   function(req, res, next) {
     if (!req.user) return res.sendStatus(401);
     if (!req.headers.location) return res.sendStatus(400);
