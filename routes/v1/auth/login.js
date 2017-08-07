@@ -15,10 +15,11 @@ router.post("/", verifyType, function(req, res) {
       if (user) {
         return res.status(201).send({
           accesstoken: createAccessToken(user),
-          refreshtoken: user.refreshtoken
+          refreshtoken: user.refreshtoken,
+          message : "ok"
         });
       } else {
-        return res.status(401).send(req.mydata.msg);
+        return res.status(401).send({'message' : 'fail'});
       }
     }
   );

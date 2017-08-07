@@ -6,12 +6,14 @@ var User = mongoose.model("User");
 
 router.post("/", function(req, res) {
   if (!req.body.username || !req.body.password) {
+    console.log("It is here now ");
     return res.status(400).send("You must send the username and the password");
   }
 
   User.findOne({ username: req.body.username }, (err, user) => {
-    if (user)
-      return res.status(400).send("A user with that username already exists");
+    if (user){
+      return res.status(400).send({'message' : 'exists'});
+    }
     else {
       new User({
         username: req.body.username,
@@ -20,6 +22,7 @@ router.post("/", function(req, res) {
       }).save((err, user) => {
         if (user) {
           return res.status(201).send({
+            message : "ok",
             accesstoken: createAccessToken(user),
             refreshtoken: user.refreshtoken
           });
