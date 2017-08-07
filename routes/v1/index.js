@@ -20,10 +20,10 @@ router.use(
     try {
       req.location = JSON.parse(req.headers.location);
     } catch (err) {
-      return sendStatus(400);
+      return res.sendStatus(400);
     }
     if (!req.location.latitude || !req.location.longitude)
-      return sendStatus(400);
+      return res.sendStatus(400);
     return next();
   }
 );
