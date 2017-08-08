@@ -6,4 +6,6 @@ var Schema = mongoose.Schema({
   refreshtoken: { type: String, default: "" }
 });
 
+mongoose.model("User", Schema);
+
 module.exports = Schema;
