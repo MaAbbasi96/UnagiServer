@@ -7,11 +7,11 @@ var router = express.Router();
 
 router.post("/", verifyType, function(req, res) {
   User.findOneAndUpdate(
-    req.mydata.obj,
+    req.mydata.query,
     { $set: { refreshtoken: createRefreshToken() } },
     { new: true },
     (err, user) => {
-      if (user) {
+      if (user && req.mydata.isValid.bind(user)()) {
         return res.status(201).send({
           accesstoken: createAccessToken(user),
           refreshtoken: user.refreshtoken,

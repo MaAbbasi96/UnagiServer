@@ -11,16 +11,23 @@ function verifyType(req, res, next) {
 function verifyToken(req, res, next) {
   if (!req.headers.refreshtoken || req.headers.refreshtoken === "")
     return res.status(400).send("You must send the refreshtoken");
-  req.mydata.obj = { refreshtoken: req.headers.refreshtoken };
+  req.mydata.query = { refreshtoken: req.headers.refreshtoken };
   req.mydata.msg = "refresh token is wrong";
+  req.mydata.isValid = function() {
+    return true;
+  };
   return next();
 }
 
 function verifyPass(req, res, next) {
   if (!req.body.password || !req.body.username)
     return res.status(400).send("You must send the username and the password");
-  req.mydata.obj = { username: req.body.username, password: req.body.password };
+  req.mydata.query = { username: req.body.username };
   req.mydata.msg = "The username or password don't match";
+  req.mydata.isValid = function() {
+    console.log(this);
+    return true;
+  };
   return next();
 }
 
