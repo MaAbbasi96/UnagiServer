@@ -16,11 +16,20 @@ var testJson = {
     password: "mahdi"
 };
 
+var testJson2 = {
+    username: undefined,
+    password: undefined
+};
+
+var testJson3 = {
+    username: "",
+    password: ""
+};
+
 describe("Registration Test", function() {
     it("Test1: valid register", function(done) {
         server
             .post("/auth/register")
-            .type("json")
             .send(testJson)
             .expect(201)
             .end(function(err, res) {
@@ -30,5 +39,43 @@ describe("Registration Test", function() {
                 });
             });
     });
-    it("Test2: invalid register");
+    it("Test2: user exists", function(done) {
+        server
+            .post("/auth/register")
+            .send(testJson)
+            .expect(201)
+            .end(function(err, res) {
+                res.status.should.equal(201);
+                server
+                    .post("/auth/register")
+                    .send(testJson)
+                    .expect(400)
+                    .end(function(err, res) {
+                        res.status.should.equal(400);
+                        User.remove({ username: testJson.username }, err2 =>
+                            done()
+                        );
+                    });
+            });
+    });
+    it("Test3: invalid register: undefined", function(done) {
+        server
+            .post("/auth/register")
+            .send(testJson2)
+            .expect(400)
+            .end(function(err, res) {
+                res.status.should.equal(400);
+                done();
+            });
+    });
+    it("Test4: invalid register: null username", function(done) {
+        server
+            .post("/auth/register")
+            .send(testJson3)
+            .expect(400)
+            .end(function(err, res) {
+                res.status.should.equal(400);
+                done();
+            });
+    });
 });
