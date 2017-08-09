@@ -15,12 +15,27 @@ router.use("/:id/", function(req, res, next) {
 });
 router.use("/:id/like", like);
 router.post("/", function(req, res) {
+    addPost(req, res);
+});
+router.get("/", function(req, res) {
+    sendPosts(req, res, false);
+});
+router.get("/hot", function(req, res) {
+    sendPosts(req, res, true);
+});
+router.post("/:id/reply", function(req, res) {
+    addPost(req, res);
+});
+function addPost(req, res) {
+    var repliedTo = null;
+    if (req.postId) repliedTo = req.postId;
     if (req.user) {
         new Post({
             text: req.body.text,
             location: req.location,
             user: req.user._id,
-            date: Date.now()
+            date: Date.now(),
+            repliedTo: repliedTo
         }).save((err, post) => {
             return res.jsonp({
                 status: 0,
@@ -29,14 +44,7 @@ router.post("/", function(req, res) {
             });
         });
     } else return res.sendStatus(401);
-});
-router.get("/", function(req, res) {
-    sendPosts(req, res, false);
-});
-router.get("/hot", function(req, res) {
-    sendPosts(req, res, true);
-});
-
+}
 function sendPosts(req, res, hotRequested) {
     var sortBy;
     if (hotRequested) sortBy = { hotRate: -1 };

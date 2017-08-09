@@ -5,7 +5,8 @@ var Schema = mongoose.Schema({
     location: { type: Object, required: true },
     date: { type: Date, required: true, default: Date.now() },
     user: { type: String, ref: "User" },
-    likes: { type: Number, default: 0 }
+    likes: { type: Number, default: 0 },
+    repliedTo: { type: String, ref: "Post", default: null }
 });
 Schema.virtual("hotRate").get(function() {
     var b = new Date(1134028003000);
