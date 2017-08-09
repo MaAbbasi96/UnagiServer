@@ -25,6 +25,7 @@ router.get("/hot", function(req, res) {
 });
 router.post("/:id/reply", function(req, res) {
     addPost(req, res);
+    updatePostReplies(req, res);
 });
 router.get("/:id", function(req, res, next) {
     var replies = [];
@@ -36,7 +37,7 @@ router.get("/:id", function(req, res, next) {
             replies = replies.concat(post);
         })
         .on("end", () => {
-            res.jsonp({
+            return res.jsonp({
                 posts: replies
             });
         });
@@ -129,6 +130,17 @@ function sendPosts(req, res, hotRequested) {
                 }); //
         })
         .on("error", err => res.jsonp(err));
+}
+function updatePostReplies(req, res) {
+    Post.findOne({ _id: req.postId }, function(err, post) {
+        if (err) console.log(err);
+        if (post) {
+            post.replies += 1;
+            post.save((err, post) => {
+                if (err) console.log(err);
+            });
+        }
+    });
 }
 
 module.exports = router;
