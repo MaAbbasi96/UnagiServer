@@ -10,16 +10,9 @@ var Schema = mongoose.Schema({
   hotRate: { type: Number, default: 0 }
 });
 
-mongoose.model("Post", Schema);
+Schema.index({ date: 1 });
+Schema.index({ hotRate: 1 });
 
-mongooseObserver.register("Post", "update", function(updatedUser) {
-  var y, z;
-  updatedUser.likes > 0 ? (y = 1) : (y = 0);
-  updatedUser.likes == 0 ? (z = 1) : (z = x);
-  updatedUser.hotRate =
-    Math.log(z) / Math.log(10) +
-    y * (this.date - new Date(1134028003000)) / 45000;
-  updatedUser.save();
-});
+mongoose.model("Post", Schema);
 
 module.exports = Schema;
