@@ -26,6 +26,21 @@ router.get("/hot", function(req, res) {
 router.post("/:id/reply", function(req, res) {
     addPost(req, res);
 });
+router.get("/:id", function(req, res, next) {
+    var replies = [];
+    const cursor = Post.find({ repliedTo: req.postId }, [], {
+        sort: { date: -1 }
+    }).cursor();
+    cursor
+        .on("data", post => {
+            replies = replies.concat(post);
+        })
+        .on("end", () => {
+            res.jsonp({
+                posts: replies
+            });
+        });
+});
 function addPost(req, res) {
     var repliedTo = null;
     if (req.postId) repliedTo = req.postId;
