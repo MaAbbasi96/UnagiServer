@@ -29,12 +29,16 @@ router.post("/:id/reply", function(req, res) {
 });
 router.get("/:id", function(req, res, next) {
     var replies = [];
+    var addPost = false;
+    if (!req.headers.lastpost) addPost = true;
     const cursor = Post.find({ repliedTo: req.postId }, [], {
         sort: { date: -1 }
     }).cursor();
     cursor
         .on("data", post => {
-            replies = replies.concat(post);
+            if (addPost) replies = replies.concat(post);
+            if (post._id == req.headers.lastpost) addPost = true;
+            if (replies.length >= 10) addPost = false;
         })
         .on("end", () => {
             return res.jsonp({
