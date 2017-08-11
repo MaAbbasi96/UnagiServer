@@ -41,9 +41,33 @@ router.get("/:id", function(req, res, next) {
             if (replies.length >= 10) addPost = false;
         })
         .on("end", () => {
-            return res.jsonp({
-                posts: replies
-            });
+            async.map(
+                replies,
+                (post, cb) => {
+                    Like.findOne(
+                        {
+                            user: req.user._id,
+                            post: post.id
+                        },
+                        (err, like) => {
+                            var postObject = post.toObject();
+                            like
+                                ? (postObject.isLiked = true)
+                                : (postObject.isLiked = false);
+                            cb(null, postObject);
+                        }
+                    );
+                },
+                (error, response) => {
+                    res.jsonp({
+                        posts: response,
+                        status: 0
+                    });
+                }
+            );
+            // return res.jsonp({
+            //     posts: replies
+            // });
         });
 });
 function addPost(req, res) {
