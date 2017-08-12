@@ -5,13 +5,9 @@ var mongoose = require("mongoose");
 mongoose.connect("mongodb://localhost:27017/college", { useMongoClient: true });
 mongoose.Promise = require("bluebird");
 
-var UserSchema = require("../models/User");
-mongoose.model("User", UserSchema);
-var User = mongoose.model("User");
+var User = require("../models/User");
 
-var PostSchema = require("../models/Post");
-mongoose.model("Post", PostSchema);
-var Post = mongoose.model("Post");
+var Post = require("../models/Post");
 
 var server = supertest.agent("http://localhost:3000");
 
