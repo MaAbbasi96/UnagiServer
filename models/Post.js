@@ -6,11 +6,8 @@ var Schema = mongoose.Schema({
     date: { type: Date, required: true, default: Date.now() },
     user: { type: String, ref: "User" },
     likes: { type: Number, default: 0 },
-<<<<<<< HEAD
-=======
     repliedTo: { type: String, ref: "Post", default: null },
     replies: { type: Number, default: 0 },
->>>>>>> replyfeature
     hotRate: { type: Number, default: 0 }
 });
 
