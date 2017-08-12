@@ -1,60 +1,146 @@
 var supertest = require("supertest");
 var should = require("should");
+var mongoose = require("mongoose");
+
+mongoose.connect("mongodb://localhost:27017/college", { useMongoClient: true });
+mongoose.Promise = require("bluebird");
+
+var UserSchema = require("../models/User");
+mongoose.model("User", UserSchema);
+var User = mongoose.model("User");
+
+var PostSchema = require("../models/Post");
+mongoose.model("Post", PostSchema);
+var Post = mongoose.model("Post");
+
+var LikeSchema = require("../models/Like");
+mongoose.model("Like", LikeSchema);
+var Like = mongoose.model("Like");
+
 var server = supertest.agent("http://localhost:3000");
+
+var testJson = {
+    username: "mahdi",
+    password: "mahdi"
+};
 
 var testLocation = {
     latitude: 35.7293757,
     longitude: 51.4224622
 };
 
-describe("Like Test", function() {
-    it("Test1", function(done) {
+var testPost = {
+    text: "I am Mahdi"
+};
+
+var access_token;
+var refresh_token;
+var post_id;
+
+describe("Send Post Test", function() {
+    it("making a user", function(done) {
         server
-            .get("/post")
-            .set("unique_id", "11111111111111111111111111111152")
-            .set("location", JSON.stringify(testLocation))
-            .expect(200)
-            .end(function(err, res) {
-                res.status.should.equal(200);
-                server
-                    .put("/post/" + res.body.posts[0]._id + "/like")
-                    .set("unique_id", "11111111111111111111111111111152")
-                    .set("location", JSON.stringify(testLocation))
-                    .expect(200)
-                    .end(function(err2, res2) {
-                        res2.status.should.equal(200);
-                        server
-                            .delete("/post/" + res.body.posts[0]._id + "/like")
-                            .set(
-                                "unique_id",
-                                "11111111111111111111111111111152"
-                            )
-                            .set("location", JSON.stringify(testLocation))
-                            .expect(200)
-                            .end(function(err3, res3) {
-                                res3.status.should.equal(200);
-                                done();
-                            });
-                    });
+            .post("/auth/register")
+            .send(testJson)
+            .expect(201)
+            .end((err, res) => {
+                res.status.should.equal(201);
+                done();
             });
     });
-    it("Test1", function(done) {
+    it("login and get tokens", function(done) {
+        server
+            .post("/auth/login")
+            .set("type", "password")
+            .send(testJson)
+            .expect(201)
+            .end(function(err, res) {
+                res.status.should.equal(201);
+                refresh_token = res.body.refreshtoken;
+                access_token = res.body.accesstoken;
+                done();
+            });
+    });
+
+    it("creating a post", function(done) {
+        server
+            .post("/post")
+            .set("Content-Type", "application/json")
+            .set("accesstoken", access_token)
+            .set("location", JSON.stringify(testLocation))
+            .send(testPost)
+            .expect(200)
+            .end(function(err, res) {
+                res.status.should.equal(200);
+                done();
+            });
+    });
+    it("get valid posts", function(done) {
         server
             .get("/post")
-            .set("unique_id", "11111111111111111111111111111152")
+            .set("Content-Type", "application/json")
+            .set("accesstoken", access_token)
             .set("location", JSON.stringify(testLocation))
             .expect(200)
             .end(function(err, res) {
                 res.status.should.equal(200);
-                server
-                    .put("/post/" + res.body.posts[0]._id + "/like")
-                    .set("unique_id", "11111111111111111111111111111152")
-                    .set("location", JSON.stringify(testLocation))
-                    .expect(200)
-                    .end(function(err2, res2) {
-                        res2.status.should.equal(200);
-                        done();
-                    });
+                post_id = res.body.posts[0]._id;
+                done();
             });
+    });
+    it("like post", function(done) {
+        server
+            .put("/post/" + post_id + "/like")
+            .set("Content-Type", "application/json")
+            .set("accesstoken", access_token)
+            .set("location", JSON.stringify(testLocation))
+            .expect(200)
+            .end(function(err, res) {
+                res.status.should.equal(200);
+                done();
+            });
+    });
+    it("unlike post", function(done) {
+        server
+            .delete("/post/" + post_id + "/like")
+            .set("Content-Type", "application/json")
+            .set("accesstoken", access_token)
+            .set("location", JSON.stringify(testLocation))
+            .expect(200)
+            .end(function(err, res) {
+                res.status.should.equal(200);
+                done();
+            });
+    });
+
+    it("double unlike post", function(done) {
+        server
+            .delete("/post/" + post_id + "/like")
+            .set("Content-Type", "application/json")
+            .set("accesstoken", access_token)
+            .set("location", JSON.stringify(testLocation))
+            .expect(200)
+            .end(function(err, res) {
+                res.status.should.equal(200);
+                done();
+            });
+    });
+
+    it("deleting like", function(done) {
+        Like.remove({}, function(error) {
+            done();
+        });
+    });
+
+    it("deleting posts", function(done) {
+        Post.remove({ text: testPost.text }, function(error) {
+            done();
+        });
+    });
+
+    it("deleting user", function(done) {
+        User.remove({ username: testJson.username }, function(error) {
+            done();
+        });
     });
 });
