@@ -16,4 +16,4 @@ Schema.index({ hotRate: 1 });
 
 mongoose.model("Post", Schema);
 
-module.exports = Schema;
+module.exports = mongoose.model("Post", Schema);

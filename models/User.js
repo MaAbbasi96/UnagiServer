@@ -28,5 +28,5 @@ Schema.pre("save", function(next) {
         });
     });
 });
-
+mongoose.model("User", Schema);
 module.exports = mongoose.model("User", Schema);
