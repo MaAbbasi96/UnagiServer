@@ -7,17 +7,13 @@ var Schema = mongoose.Schema({
     user: { type: String, ref: "User" },
     likes: { type: Number, default: 0 },
     repliedTo: { type: String, ref: "Post", default: null },
-    replies: { type: Number, default: 0 }
+    replies: { type: Number, default: 0 },
+    hotRate: { type: Number, default: 0 }
 });
-Schema.virtual("hotRate").get(function() {
-    var b = new Date(1134028003000);
-    var time = this.date - b;
-    var x = this.likes;
-    var y, z;
-    x > 0 ? (y = 1) : (y = 0);
-    x == 0 ? (z = 1) : (z = x);
-    return Math.log(z) / Math.log(10) + y * time / 45000;
-});
-// return this.nickname + ` (${this.credit}$)`}
+
+Schema.index({ date: 1 });
+Schema.index({ hotRate: 1 });
+
+mongoose.model("Post", Schema);
 
 module.exports = Schema;

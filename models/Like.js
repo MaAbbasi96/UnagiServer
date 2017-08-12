@@ -8,4 +8,6 @@ var Schema = mongoose.Schema({
 
 Schema.index({ user: 1, post: 1 }, { unique: true });
 
+mongoose.model("Like", Schema);
+
 module.exports = Schema;

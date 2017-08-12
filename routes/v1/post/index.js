@@ -14,6 +14,7 @@ router.use("/:id/", function(req, res, next) {
     return next();
 });
 router.use("/:id/like", like);
+
 router.post("/", function(req, res) {
     addPost(req, res);
 });
