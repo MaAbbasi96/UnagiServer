@@ -6,7 +6,6 @@ var User = mongoose.model("User");
 
 router.post("/", function(req, res) {
     if (!req.body.username || !req.body.password) {
-        console.log("It is here now ");
         return res
             .status(400)
             .send("You must send the username and the password");
