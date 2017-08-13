@@ -10,7 +10,7 @@ function createAccessToken(user) {
 function createRefreshToken() {
     return jwt.sign(
         {
-            exp: Math.floor(Date.now() / 1000) + 60 * 20,
+            exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 365 * 60,
             jti: genJti() // unique identifier for the token
         },
         "oonagi"

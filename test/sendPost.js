@@ -69,7 +69,7 @@ describe("Send Post Test", function() {
         server
             .post("/post")
             .set("Content-Type", "application/json")
-            .set("accesstoken", "1234")
+            .set("accesstoken", "12344565585556666666698")
             .set("location", JSON.stringify(testLocation))
             .send(testPost)
             .expect(401)

@@ -23,6 +23,7 @@
     "serve-favicon": "~2.2.0"
   },
   "devDependencies": {
+    "eslint-config-google": "^0.9.1",
     "mocha": "^3.4.2",
     "should": "^11.2.1",
     "supertest": "^3.0.0"
