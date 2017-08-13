@@ -29,6 +29,17 @@ router.post("/:id/reply", function(req, res) {
     updatePostReplies(req, res);
 });
 router.get("/:id", function(req, res, next) {
+    var post;
+    Post.findById(req.postId, function(err, _post) {
+        post = _post.toObject();
+        Like.findOne({ post: req.postId, user: req.user._id }, function(
+            err,
+            like
+        ) {
+            like ? (post.isLiked = true) : (post.isLiked = false);
+        });
+    });
+
     var replies = [];
     var addPost = false;
     if (!req.headers.lastpost) addPost = true;
@@ -61,6 +72,7 @@ router.get("/:id", function(req, res, next) {
                 },
                 (error, response) => {
                     res.jsonp({
+                        post,
                         posts: response,
                         status: 0
                     });
