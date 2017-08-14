@@ -2,6 +2,8 @@
 
 A Location-Based Social Network
 
+<br /><br />
+
 ## How to run unit test
 
 First you need to install mocha
@@ -13,11 +15,17 @@ After this you can test the server by using command bellow:
 mocha /test/[testfile name]
 ```
 
+<br /><br />
+
 ## Built With
 
 * [Node.js](https://nodejs.org/) - Javascript Framework
 
+<br /><br />
+
 ## List of API's
+
+<br />
 
 ### Send Post
 
