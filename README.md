@@ -23,15 +23,15 @@ mocha /test/[testfile name]
 
 * Method: POST
 * URL: /post
-* Headers: 
-    accesstoken: token given by server
+* Headers: <br />
+    accesstoken: token given by server <br />
     location: Stringified JSON
-* Body:
+* Body:<br />
     text: JSON
-* Response:
-    {
-        text: String
-        location: JSON
+* Response:<br />
+    {<br />
+        text: String<br />
+        location: JSON<br />
     }
 * Status Success: 200
 * Status Failed: 401
@@ -40,14 +40,14 @@ mocha /test/[testfile name]
 
 * Method: GET
 * URL: /post
-* Headers: 
-    accesstoken: token given by server
+* Headers: <br />
+    accesstoken: token given by server<br />
     location: Stringified JSON
-* Response:
-    a List of
-    {
-        text: String
-        location: JSON
+* Response:<br />
+    a List of<br />
+    {<br />
+        text: String<br />
+        location: JSON<br />
     }
 * Status Success: 200
 * Status Failed: 401
@@ -56,15 +56,15 @@ mocha /test/[testfile name]
 
 * Method: POST
 * URL: /auth/register
-* Body:
-    {
-        username: String
-        password: String
+* Body:<br />
+    {<br />
+        username: String<br />
+        password: String<br />
     }
-* Response:
-    {
-        accesstoken: Access token given by server
-        refreshtoken: Refresh token given by server
+* Response:<br />
+    {<br />
+        accesstoken: Access token given by server<br />
+        refreshtoken: Refresh token given by server<br />
     }
 * Status Success: 201
 * Status Failed: 400
@@ -76,16 +76,16 @@ mocha /test/[testfile name]
 * Headers: <br />
     type: "token" or "password" <br />
     refreshtoken: Refresh token given by server(Optional) <br />
-    accesstoken: Access token given by server(Optional) <br />
-* Body:
-    {
-        username: String
-        password: String
+    accesstoken: Access token given by server(Optional) 
+* Body:<br />
+    {<br />
+        username: String<br />
+        password: String<br />
     }
-* Response:
-    {
-        accesstoken: Access token given by server
-        refreshtoken: Refresh token given by server
+* Response:<br />
+    {<br />
+        accesstoken: Access token given by server<br />
+        refreshtoken: Refresh token given by server<br />
     }
 * Status Success: 200
 * Status Failed: 401
@@ -94,8 +94,8 @@ mocha /test/[testfile name]
 
 * Method: PUT
 * URL: /post/:postId/like
-* Headers:
-    accesstoken: Access token given by server
+* Headers:<br />
+    accesstoken: Access token given by server<br />
     location: Stringified JSON
 * Status Success: 200
 * Status Failed: 401
@@ -104,8 +104,8 @@ mocha /test/[testfile name]
 
 * Method: DELETE
 * URL: /post/:postId/like
-* Headers:
-    accesstoken: Access token given by server
+* Headers:<br />
+    accesstoken: Access token given by server<br />
     location: Stringified JSON
 * Status Success: 200
 * Status Failed: 401
@@ -114,14 +114,14 @@ mocha /test/[testfile name]
 
 * Method: GET
 * URL: /post/hot
-* Headers: 
-    accesstoken: token given by server
+* Headers: <br />
+    accesstoken: token given by server<br />
     location: Stringified JSON
-* Response:
-    a List of
-    {
-        text: String
-        location: JSON
+* Response:<br />
+    a List of<br />
+    {<br />
+        text: String<br />
+        location: JSON<br />
     }
 * Status Success: 200
 * Status Failed: 401
@@ -130,15 +130,15 @@ mocha /test/[testfile name]
 
 * Method: POST
 * URL: /post/:postId/reply
-* Headers:
-    location: Stringified JSON
+* Headers:<br />
+    location: Stringified JSON<br />
     accesstoken: Access token given by server
-* Body:
+* Body:<br />
     text: JSON
-* Response:
-    {
-        text: String
-        location: JSON
+* Response:<br />
+    {<br />
+        text: String<br />
+        location: JSON<br />
     }
 * Status Success: 200
 * Status Failed: 401
@@ -147,15 +147,15 @@ mocha /test/[testfile name]
 
 * Method: GET
 * URL: /post/:postId
-* Headers: 
-    type: "token"
-    accesstoken: token given by server
+* Headers: <br />
+    type: "token"<br />
+    accesstoken: token given by server<br />
     location: Stringified JSON
-* Response:
-    a List of
-    {
-        text: String
-        location: JSON
+* Response:<br />
+    a List of<br />
+    {<br />
+        text: String<br />
+        location: JSON<br />
     }
 * Status Success: 200
 * Status Failed: 401
