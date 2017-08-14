@@ -14,8 +14,8 @@ var Like = require("../models/Like");
 var server = supertest.agent("http://localhost:3000");
 
 var testJson = {
-    username: "mahdi",
-    password: "mahdi"
+    username: "mahdi1234",
+    password: "ma19961996"
 };
 
 var testLocation = {
