@@ -15,8 +15,13 @@ var testJson = {
 };
 
 var testJson4 = {
-    username: "mahdi",
+    username: "mahdi1234",
     password: "mahdi"
+};
+
+var testJson5 = {
+    username: "mahdi",
+    password: "mahdi1234"
 };
 
 var testJson2 = {
@@ -75,6 +80,26 @@ describe("Registration Test", function() {
         server
             .post("/auth/register")
             .send(testJson3)
+            .expect(400)
+            .end(function(err, res) {
+                res.status.should.equal(400);
+                done();
+            });
+    });
+    it("Test5: invalid register: bad password", function(done) {
+        server
+            .post("/auth/register")
+            .send(testJson4)
+            .expect(400)
+            .end(function(err, res) {
+                res.status.should.equal(400);
+                done();
+            });
+    });
+    it("Test6: invalid register: bad username", function(done) {
+        server
+            .post("/auth/register")
+            .send(testJson5)
             .expect(400)
             .end(function(err, res) {
                 res.status.should.equal(400);
