@@ -10,8 +10,8 @@ var User = require("../models/User");
 var server = supertest.agent("http://localhost:3000");
 
 var testJson = {
-    username: "mahdi",
-    password: "mahdi"
+    username: "mahdi1234",
+    password: "ma19961996"
 };
 
 var testJson2 = {

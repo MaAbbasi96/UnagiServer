@@ -5,10 +5,15 @@ var router = express.Router();
 var User = mongoose.model("User");
 
 router.post("/", function(req, res) {
-    if (!req.body.username || !req.body.password) {
-        return res
-            .status(400)
-            .send("You must send the username and the password");
+    console.log(req.body.username.length);
+    if (
+        !req.body.username ||
+        !req.body.password ||
+        req.body.username.length <= 6 ||
+        req.body.password.length <= 6 ||
+        req.body.password === req.body.username
+    ) {
+        return res.status(400).send("invalid username or password");
     }
 
     User.findOne({ username: req.body.username }, (err, user) => {
