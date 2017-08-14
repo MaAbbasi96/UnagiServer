@@ -29,47 +29,60 @@ router.post("/:id/reply", function(req, res) {
     updatePostReplies(req, res);
 });
 router.get("/:id", function(req, res, next) {
-    var replies = [];
-    var addPost = false;
-    if (!req.headers.lastpost) addPost = true;
-    const cursor = Post.find({ repliedTo: req.postId }, [], {
-        sort: { date: -1 }
-    }).cursor();
-    cursor
-        .on("data", post => {
-            if (addPost) replies = replies.concat(post);
-            if (post._id == req.headers.lastpost) addPost = true;
-            if (replies.length >= 10) addPost = false;
-        })
-        .on("end", () => {
-            async.map(
-                replies,
-                (post, cb) => {
-                    Like.findOne(
-                        {
-                            user: req.user._id,
-                            post: post.id
-                        },
-                        (err, like) => {
-                            var postObject = post.toObject();
-                            like
-                                ? (postObject.isLiked = true)
-                                : (postObject.isLiked = false);
-                            cb(null, postObject);
-                        }
-                    );
-                },
-                (error, response) => {
-                    res.jsonp({
-                        posts: response,
-                        status: 0
+    var post;
+    Post.findById(req.postId, function(err, _post) {
+        if (_post) {
+            post = _post.toObject();
+            Like.findOne({ post: req.postId, user: req.user._id }, function(
+                err,
+                like
+            ) {
+                like ? (post.isLiked = true) : (post.isLiked = false);
+                var replies = [];
+                var addPost = false;
+                if (!req.headers.lastpost) addPost = true;
+                const cursor = Post.find({ repliedTo: req.postId }, [], {
+                    sort: { date: -1 }
+                }).cursor();
+                cursor
+                    .on("data", post => {
+                        if (addPost) replies = replies.concat(post);
+                        if (post._id == req.headers.lastpost) addPost = true;
+                        if (replies.length >= 10) addPost = false;
+                    })
+                    .on("end", () => {
+                        async.map(
+                            replies,
+                            (post, cb) => {
+                                Like.findOne(
+                                    {
+                                        user: req.user._id,
+                                        post: post.id
+                                    },
+                                    (err, like) => {
+                                        var postObject = post.toObject();
+                                        like
+                                            ? (postObject.isLiked = true)
+                                            : (postObject.isLiked = false);
+                                        cb(null, postObject);
+                                    }
+                                );
+                            },
+                            (error, response) => {
+                                res.jsonp({
+                                    post,
+                                    posts: response,
+                                    status: 0
+                                });
+                            }
+                        );
+                        // return res.jsonp({
+                        //     posts: replies
+                        // });
                     });
-                }
-            );
-            // return res.jsonp({
-            //     posts: replies
-            // });
-        });
+            });
+        }
+    });
 });
 function addPost(req, res) {
     var repliedTo = null;
