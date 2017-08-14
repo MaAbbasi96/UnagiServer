@@ -15,9 +15,8 @@ router.use("/:id/", function(req, res, next) {
 });
 router.use("/:id/like", like);
 
-router.post("/", function(req, res) {
-    addPost(req, res);
-});
+router.post("/", addPost);
+
 router.get("/", function(req, res) {
     sendPosts(req, res, false);
 });
@@ -103,14 +102,11 @@ function addPost(req, res) {
         });
     } else return res.sendStatus(401);
 }
+
 function sendPosts(req, res, hotRequested) {
     var sortBy;
     if (hotRequested) sortBy = { hotRate: -1 };
     else sortBy = { date: -1 };
-    if (!req.user)
-        new User({
-            unique_id: req.unique_id
-        }).save();
     var nearbyPosts = [];
     var addPost = false;
     if (!req.headers.lastpost) {
@@ -139,40 +135,34 @@ function sendPosts(req, res, hotRequested) {
                         ? -1
                         : b.hotRate > a.hotRate ? 1 : 0;
                 });
-            if (req.user) {
-                //Don't get post likes if user is new
-                async.map(
-                    nearbyPosts,
-                    (post, cb) => {
-                        Like.findOne(
-                            {
-                                user: req.user._id,
-                                post: post.id
-                            },
-                            (err, like) => {
-                                var postObject = post.toObject();
-                                like
-                                    ? (postObject.isLiked = true)
-                                    : (postObject.isLiked = false);
-                                cb(null, postObject);
-                            }
-                        );
-                    },
-                    (error, response) => {
-                        res.jsonp({
-                            posts: response,
-                            status: 0
-                        });
-                    }
-                );
-            } else
-                res.jsonp({
-                    posts: nearbyPosts,
-                    status: 0
-                }); //
+            async.map(
+                nearbyPosts,
+                (post, cb) => {
+                    Like.findOne(
+                        {
+                            user: req.user._id,
+                            post: post.id
+                        },
+                        (err, like) => {
+                            var postObject = post.toObject();
+                            like
+                                ? (postObject.isLiked = true)
+                                : (postObject.isLiked = false);
+                            cb(null, postObject);
+                        }
+                    );
+                },
+                (error, response) => {
+                    res.jsonp({
+                        posts: response,
+                        status: 0
+                    });
+                }
+            );
         })
         .on("error", err => res.jsonp(err));
 }
+
 function updatePostReplies(req, res) {
     Post.findOne({ _id: req.postId }, function(err, post) {
         if (err) console.log(err);
