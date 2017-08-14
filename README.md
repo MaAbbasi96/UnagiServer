@@ -73,10 +73,10 @@ mocha /test/[testfile name]
 
 * Method: POST
 * URL: /auth/login
-* Headers:
-    type: "token" or "password"
-    refreshtoken: Refresh token given by server(Optional)
-    accesstoken: Access token given by server(Optional)
+* Headers: <br />
+    type: "token" or "password" <br />
+    refreshtoken: Refresh token given by server(Optional) <br />
+    accesstoken: Access token given by server(Optional) <br />
 * Body:
     {
         username: String
