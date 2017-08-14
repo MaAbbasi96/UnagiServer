@@ -24,7 +24,7 @@ var testJson5 = {
     password: "mahdi1234"
 };
 
-var testJson5 = {
+var testJson6 = {
     username: "mahdi1234",
     password: "mahdi1234"
 };
@@ -77,7 +77,7 @@ describe("Registration Test", function() {
             .send(testJson2)
             .expect(500)
             .end(function(err, res) {
-                res.status.should.equal(400);
+                res.status.should.equal(500);
                 done();
             });
     });
