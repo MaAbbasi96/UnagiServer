@@ -24,6 +24,11 @@ var testJson5 = {
     password: "mahdi1234"
 };
 
+var testJson5 = {
+    username: "mahdi1234",
+    password: "mahdi1234"
+};
+
 var testJson2 = {
     username: undefined,
     password: undefined
@@ -70,7 +75,7 @@ describe("Registration Test", function() {
         server
             .post("/auth/register")
             .send(testJson2)
-            .expect(400)
+            .expect(500)
             .end(function(err, res) {
                 res.status.should.equal(400);
                 done();
@@ -100,6 +105,19 @@ describe("Registration Test", function() {
         server
             .post("/auth/register")
             .send(testJson5)
+            .expect(400)
+            .end(function(err, res) {
+                res.status.should.equal(400);
+                done();
+            });
+    });
+
+    it("Test7: invalid register: username and password are the same", function(
+        done
+    ) {
+        server
+            .post("/auth/register")
+            .send(testJson6)
             .expect(400)
             .end(function(err, res) {
                 res.status.should.equal(400);
