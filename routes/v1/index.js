@@ -2,7 +2,8 @@ var express = require("express"),
     router = express.Router(),
     post = require("./post"),
     auth = require("./auth"),
-    jwt = require("express-jwt");
+    jwt = require("express-jwt"),
+    user = require("./user");
 
 router.use("/auth", auth);
 
@@ -29,5 +30,6 @@ router.use(
 );
 
 router.use("/post", post);
+router.use("/user", user);
 
 module.exports = router;
