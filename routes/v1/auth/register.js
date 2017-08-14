@@ -11,6 +11,8 @@ router.post("/", function(req, res) {
             .send("You must send the username and the password");
     }
 
+    // TODO: username and password check
+
     User.findOne({ username: req.body.username }, (err, user) => {
         if (user) {
             return res.status(400).send({ message: "exists" });
