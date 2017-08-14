@@ -5,7 +5,7 @@ var express = require("express"),
 var Post = mongoose.model("Post"),
     Like = mongoose.model("Like");
 
-router.post("/post", sendMyPosts);
+router.get("/post", sendMyPosts);
 
 function sendMyPosts(req, res) {
     var myPosts = [];
