@@ -9,8 +9,8 @@ router.post("/", function(req, res) {
     if (
         !req.body.username ||
         !req.body.password ||
-        req.body.username.length <= 6 ||
-        req.body.password.length <= 6 ||
+        req.body.username.length < 6 ||
+        req.body.password.length < 6 ||
         req.body.password === req.body.username
     ) {
         return res.status(400).send("invalid username or password");
