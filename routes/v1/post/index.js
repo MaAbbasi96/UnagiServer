@@ -94,6 +94,11 @@ function addPost(req, res) {
             date: Date.now(),
             repliedTo: repliedTo
         }).save((err, post) => {
+            if (err) {
+                return res.jsonp({
+                    status: -1
+                });
+            }
             return res.jsonp({
                 status: 0,
                 text: post.text,
