@@ -63,7 +63,16 @@ router.get("/:id", function(req, res, next) {
                                         like
                                             ? (postObject.isLiked = true)
                                             : (postObject.isLiked = false);
-                                        cb(null, postObject);
+                                        if (postObject.repliedTo) {
+                                            Post.findById(
+                                                postObject.repliedTo,
+                                                function(err, post) {
+                                                    postObject.fatherText =
+                                                        post.text;
+                                                    cb(null, postObject);
+                                                }
+                                            );
+                                        } else cb(null, postObject);
                                     }
                                 );
                             },
