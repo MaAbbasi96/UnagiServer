@@ -77,11 +77,25 @@ router.get("/:id", function(req, res, next) {
                                 );
                             },
                             (error, response) => {
-                                res.jsonp({
-                                    post,
-                                    posts: response,
-                                    status: 0
-                                });
+                                if (post.repliedTo) {
+                                    Post.findById(post.repliedTo, function(
+                                        err,
+                                        postRes
+                                    ) {
+                                        post.fatherText = postRes.text;
+                                        res.jsonp({
+                                            post,
+                                            posts: response,
+                                            status: 0
+                                        });
+                                    });
+                                } else {
+                                    res.jsonp({
+                                        post,
+                                        posts: response,
+                                        status: 0
+                                    });
+                                }
                             }
                         );
                         // return res.jsonp({
